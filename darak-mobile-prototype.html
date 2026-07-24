@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>دارك | من المخطط إلى بيت الحلم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --graphite:#1A1A1D; --papier:#F7F5F0; --cuivre:#C97A3D; --cuivre-soft:#E3A26B;
+    --bleu-plan:#5A80B8; --sauge:#6B8F71; --ligne:#3D3D42;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:'Tajawal', sans-serif;background:#0d0d0f;color:var(--graphite);
+    display:flex;justify-content:center;
+  }
+  .mono{font-family:'Space Grotesk';}
+  .numerals{font-family:'IBM Plex Sans Arabic';}
+
+  /* cadre "téléphone" pour la démo */
+  .phone{
+    width:390px;max-width:100vw;min-height:100vh;background:var(--papier);
+    position:relative;overflow-x:hidden;
+    box-shadow:0 0 60px rgba(0,0,0,0.4);
+  }
+
+  /* barre de statut + header */
+  .app-header{
+    background:var(--graphite);color:var(--papier);
+    padding:14px 18px 16px;position:sticky;top:0;z-index:20;
+  }
+  .top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.05rem;}
+  .logo .dot{width:8px;height:8px;background:var(--cuivre);border-radius:50%;}
+  .progress-dots{display:flex;gap:6px;}
+  .progress-dots span{width:22px;height:4px;border-radius:3px;background:rgba(247,245,240,0.2);}
+  .progress-dots span.active{background:var(--cuivre);}
+  .step-title{font-size:1.05rem;font-weight:700;}
+  .step-sub{font-size:0.78rem;color:rgba(247,245,240,0.55);margin-top:3px;}
+
+  .screen{padding:24px 18px 100px;}
+
+  /* ===== écran caméra/upload ===== */
+  .capture-zone{
+    background:#fff;border:2px dashed var(--ligne);border-radius:18px;
+    padding:36px 20px;text-align:center;margin-bottom:16px;
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 29px, rgba(90,128,184,0.07) 29px 30px),
+      repeating-linear-gradient(90deg, transparent 0 29px, rgba(90,128,184,0.07) 29px 30px);
+  }
+  .capture-icon{
+    width:58px;height:58px;border-radius:50%;background:var(--graphite);color:var(--papier);
+    display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 16px;
+  }
+  .capture-zone h3{font-size:1rem;font-weight:700;margin-bottom:6px;}
+  .capture-zone p{font-size:0.82rem;color:#8a8580;}
+
+  .btn-full{
+    width:100%;padding:16px;border-radius:12px;font-weight:700;font-size:0.95rem;
+    border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-bottom:10px;
+  }
+  .btn-camera{background:var(--cuivre);color:#fff;}
+  .btn-file{background:#fff;border:1.5px solid var(--graphite);color:var(--graphite);}
+
+  .tip-card{
+    background:rgba(107,143,113,0.1);border:1px solid var(--sauge);border-radius:12px;
+    padding:14px 16px;font-size:0.8rem;color:#3d523f;margin-top:18px;line-height:1.6;
+  }
+
+  /* ===== écran preview mobile (accordéon) ===== */
+  .plan-canvas-mobile{
+    background:#fff;border:1px solid var(--ligne);border-radius:16px;height:260px;position:relative;
+    margin-bottom:16px;
+    background-image:
+      linear-gradient(rgba(90,128,184,0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(90,128,184,0.12) 1px, transparent 1px);
+    background-size:20px 20px;
+  }
+  .room-box{
+    position:absolute;border:2px solid var(--bleu-plan);border-radius:4px;
+    background:rgba(90,128,184,0.06);display:flex;align-items:center;justify-content:center;
+    font-size:0.68rem;font-weight:700;color:var(--bleu-plan);
+  }
+  .r1{top:16px;right:16px;width:110px;height:90px;}
+  .r2{top:16px;right:136px;width:90px;height:90px;}
+  .r3{top:116px;right:16px;width:80px;height:120px;}
+  .r4{top:116px;right:106px;width:120px;height:120px;}
+
+  .summary-card{
+    background:#fff;border:1px solid var(--ligne);border-radius:14px;padding:16px;margin-bottom:12px;
+  }
+  .summary-card h4{font-size:0.82rem;font-weight:700;color:var(--cuivre);margin-bottom:10px;}
+  .detected-row{display:flex;justify-content:space-between;font-size:0.85rem;padding:7px 0;border-bottom:1px solid #eee;}
+  .detected-row:last-child{border:none;}
+  .detected-row .val{font-weight:700;}
+
+  /* ===== écran styles (scroll horizontal) ===== */
+  .style-scroll{
+    display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;margin-bottom:20px;
+    scroll-snap-type:x mandatory;
+  }
+  .style-scroll::-webkit-scrollbar{display:none;}
+  .style-card{
+    flex:0 0 130px;border-radius:14px;overflow:hidden;border:2px solid transparent;
+    scroll-snap-align:start;position:relative;
+  }
+  .style-card.selected{border-color:var(--cuivre);}
+  .style-media{height:95px;}
+  .sm1{background:linear-gradient(135deg,#d4c4a8,#8a7256);}
+  .sm2{background:linear-gradient(135deg,#c9c9c9,#6b6b6b);}
+  .sm3{background:linear-gradient(135deg,#c7a97e,#7d5a3a);}
+  .sm4{background:linear-gradient(135deg,#a8b8a0,#5a6e52);}
+  .style-name{background:#fff;padding:8px;font-size:0.78rem;font-weight:700;text-align:center;}
+  .check-badge{
+    position:absolute;top:6px;left:6px;width:20px;height:20px;background:var(--cuivre);
+    color:#fff;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:0.65rem;
+  }
+  .style-card.selected .check-badge{display:flex;}
+
+  /* ===== écran résultat ===== */
+  .reveal-mobile{
+    border-radius:16px;overflow:hidden;height:220px;position:relative;margin-bottom:16px;
+  }
+  .reveal-blueprint{
+    position:absolute;inset:0;width:50%;background:var(--graphite);
+    background-image:
+      linear-gradient(rgba(90,128,184,0.25) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(90,128,184,0.25) 1px, transparent 1px);
+    background-size:20px 20px;
+  }
+  .reveal-render{position:absolute;inset:0;right:50%;left:auto;background:linear-gradient(135deg,#d9c3a0,#8a6a45);}
+  .reveal-tag{
+    position:absolute;bottom:10px;background:rgba(0,0,0,0.5);color:#fff;padding:4px 10px;
+    border-radius:16px;font-size:0.7rem;font-weight:700;
+  }
+  .rt1{right:10px;}.rt2{left:10px;}
+
+  .ar-banner{
+    background:var(--graphite);color:var(--papier);border-radius:14px;padding:16px;
+    display:flex;align-items:center;gap:12px;margin-bottom:16px;
+  }
+  .ar-icon{font-size:1.6rem;}
+  .ar-banner div h5{font-size:0.88rem;font-weight:700;margin-bottom:2px;}
+  .ar-banner div p{font-size:0.75rem;color:rgba(247,245,240,0.6);}
+
+  .action-row{display:flex;gap:10px;margin-bottom:16px;}
+  .action-card{
+    flex:1;background:#fff;border:1px solid var(--ligne);border-radius:12px;padding:14px;text-align:center;
+  }
+  .action-card .ic{font-size:1.3rem;margin-bottom:6px;}
+  .action-card h6{font-size:0.8rem;font-weight:700;margin-bottom:8px;}
+
+  .warn{
+    background:#FBF3E6;border:1px solid var(--cuivre-soft);border-radius:10px;
+    padding:12px 14px;font-size:0.75rem;color:#7a4e1e;line-height:1.6;
+  }
+
+  /* ===== bottom nav fixe ===== */
+  .bottom-bar{
+    position:fixed;bottom:0;width:390px;max-width:100vw;background:#fff;
+    border-top:1px solid #e5e0d5;padding:14px 18px;display:flex;gap:10px;z-index:20;
+  }
+  .btn{
+    flex:1;padding:14px;border-radius:12px;font-weight:700;font-size:0.9rem;border:none;cursor:pointer;
+  }
+  .btn-back{background:var(--papier);color:var(--graphite);border:1.5px solid var(--ligne);}
+  .btn-next{background:var(--cuivre);color:#fff;}
+
+  .section-divider{
+    text-align:center;color:#8a8580;font-size:0.72rem;margin:26px 0 14px;
+    text-transform:uppercase;letter-spacing:1px;font-weight:700;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="app-header">
+    <div class="top-row">
+      <div class="logo"><span class="dot"></span> دارك</div>
+      <div class="progress-dots">
+        <span class="active"></span><span class="active"></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="step-title">تأكد من المخطط</div>
+    <div class="step-sub">خطوة 2 من 4 — راجع الغرف المكتشفة</div>
+  </div>
+
+  <div class="screen">
+
+    <div class="section-divider">التقاط المخطط</div>
+    <div class="capture-zone">
+      <div class="capture-icon">📷</div>
+      <h3>صور المخطط بالكاميرا</h3>
+      <p>ركّز الكاميرا على المخطط بإضاءة واضحة</p>
+    </div>
+    <button class="btn-full btn-camera">📷 فتح الكاميرا</button>
+    <button class="btn-full btn-file">📁 اختيار ملف (PDF/صورة)</button>
+    <div class="tip-card">💡 نصيحة: صور المخطط بزاوية مستقيمة من فوق، وتجنب الظل على الورقة.</div>
+
+    <div class="section-divider">المعاينة والتعديل</div>
+    <div class="plan-canvas-mobile">
+      <div class="room-box r1">الصالون</div>
+      <div class="room-box r2">المطبخ</div>
+      <div class="room-box r3">غرفة</div>
+      <div class="room-box r4">غرفة 2</div>
+    </div>
+    <div class="summary-card">
+      <h4>📐 عناصر مكتشفة</h4>
+      <div class="detected-row"><span>المساحة</span><span class="val numerals">142 م²</span></div>
+      <div class="detected-row"><span>الغرف</span><span class="val numerals">4</span></div>
+      <div class="detected-row"><span>دقة الكشف</span><span class="val">عالية ✓</span></div>
+    </div>
+
+    <div class="section-divider">اختيار الطابع</div>
+    <div class="style-scroll">
+      <div class="style-card selected">
+        <div class="style-media sm1"><span class="check-badge">✓</span></div>
+        <div class="style-name">مغربي تقليدي</div>
+      </div>
+      <div class="style-card">
+        <div class="style-media sm2"></div>
+        <div class="style-name">عصري بسيط</div>
+      </div>
+      <div class="style-card">
+        <div class="style-media sm3"></div>
+        <div class="style-name">متوسطي دافئ</div>
+      </div>
+      <div class="style-card">
+        <div class="style-media sm4"></div>
+        <div class="style-name">صناعي</div>
+      </div>
+    </div>
+
+    <div class="section-divider">النتيجة</div>
+    <div class="reveal-mobile">
+      <div class="reveal-blueprint"><span class="reveal-tag rt2 mono">المخطط</span></div>
+      <div class="reveal-render"><span class="reveal-tag rt1">التصور</span></div>
+    </div>
+
+    <div class="ar-banner">
+      <span class="ar-icon">📱</span>
+      <div>
+        <h5>شوف بيتك بالواقع المعزز</h5>
+        <p>وجّه الكاميرا للأرض وعيش التجربة</p>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <div class="action-card">
+        <div class="ic">🏠</div>
+        <h6>نموذج 3D</h6>
+        <button class="btn btn-back" style="padding:8px;font-size:0.78rem;">فتح</button>
+      </div>
+      <div class="action-card">
+        <div class="ic">📄</div>
+        <h6>مخطط تقني</h6>
+        <button class="btn btn-back" style="padding:8px;font-size:0.78rem;">تحميل</button>
+      </div>
+    </div>
+
+    <div class="warn">
+      ⚠️ المخطط التقني معد للتخطيط الأولي فقط. لأي بناء فعلي، راجع مهندس معماري مرخّص.
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <button class="btn btn-back">رجوع</button>
+    <button class="btn btn-next">التالي ←</button>
+  </div>
+</div>
+
+</body>
+</html>
