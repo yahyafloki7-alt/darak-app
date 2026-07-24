@@ -1,0 +1,12 @@
+{
+  "name": "دارك - من المخطط إلى بيت الحلم",
+  "short_name": "دارك",
+  "description": "حوّل مخطط منزلك من PDF أو صورة إلى تصور 3D ومخطط تقني",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F5F0",
+  "theme_color": "#1A1A1D",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": []
+}
